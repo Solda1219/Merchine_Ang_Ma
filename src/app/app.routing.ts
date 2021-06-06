@@ -48,7 +48,7 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },
@@ -62,8 +62,8 @@ export const routes: Routes = [
         loadChildren: () => import('./view/account/account.module').then(m => m.AccountModule)
       },
       {
-        path: 'group',
-        loadChildren: () => import('./view/group/group.module').then(m => m.GroupModule)
+        path: 'wip',
+        loadChildren: () => import('./view/wip/wip.module').then(m => m.WipModule)
       },
     ]
   },
