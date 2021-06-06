@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService.postRequest('api/Authentication/authenticate', loginData, false).subscribe(
       res => {
-        
+
         console.log(res)
         console.log(res['data']['token'])
         this.loading = false;

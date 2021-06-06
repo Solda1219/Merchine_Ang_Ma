@@ -28,17 +28,10 @@ export const navItems = [
     ]
   },
   {
-    name: 'Group',
+    name: 'WIP',
     icon: 'fa fa-group',
-    url: '/group',
+    url: '/wip',
     role:-1,
-    children:[
-      {
-        name: 'Group Organize',
-        url:'/group/organize',
-        icon:'cil-triangle',
-        role:-1,
-      },
-    ]
+
   },
 ];
