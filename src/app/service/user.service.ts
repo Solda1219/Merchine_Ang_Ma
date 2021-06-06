@@ -65,15 +65,17 @@ export class UserService {
   getUserPayload() {
     var token = this.getToken();
     if (token) {
-      var userPayload = atob(token['token'].split('.')[1]);
-      return JSON.parse(userPayload);
+      var userPayload = token['token'];
+      return userPayload;
     }
     else
       return null;
   }
   isLoggedIn() {
     var userPayload = this.getUserPayload();
-    if (userPayload)  return userPayload.exp > Date.now() / 1000
+    if(userPayload){
+      return true;
+    }
     else return false;
   }
   getHeader() {

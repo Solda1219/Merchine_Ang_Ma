@@ -57,23 +57,15 @@ export class LoginComponent implements OnInit {
       res => {
         
         console.log(res)
-
+        console.log(res['data']['token'])
         this.loading = false;
-        // if (res.status == 200) {
-          this.userService.setToken(
-            // {
-            //   token: res['token'],
-            //   userInfo: res['userInfo'],
-            //   expiresAt: res['expiresAt'],
-            // }
-            {
-              token: "token",
-              userInfo: "userInfo",
-              expiresAt: "expireAt",
-            }
-          );
-          this.userService.gotoFirstPage()
-        // }
+        this.userService.setToken(
+          {
+            token: res['data']['token'],
+            userInfo: res['data']['userName'],
+          }
+        );
+        this.userService.gotoFirstPage()
       },
       err => {
         console.log(err)

@@ -51,34 +51,35 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(){
     this.curRoute=this.route.routerState.snapshot.url;
     this.user = this.userService.getToken()['userInfo'];
-    this.setNavItemByRole();
+    document.getElementsByClassName("navbar-toggler-icon")[2]
+    // this.setNavItemByRole();
   }
   ngOnDestroy(){
     localStorage.removeItem('language');
   }
   //set nav item
-  setNavItemByRole(){
-    const user_role = this.user.role;
-    for(let i=0; i < this.nav.length; i++){
-      const {role,children} = this.nav[i];
-      if(role==-1) continue
-      else{
-        if(role<user_role) {
-          this.nav.splice(i,1);
-          continue;
-        }
-        if(children) {
-          for(let c=0; c < this.nav[i].children.length; c++){
-            const role_c = this.nav[i].children[c].role;
-            if(role_c<user_role) {
-              this.nav[i].children.splice(c,1);
-              continue;
-            }
-          }
-        }
-      }
-    }
-  }
+  // setNavItemByRole(){
+  //   const user_role = this.user.role;
+  //   for(let i=0; i < this.nav.length; i++){
+  //     const {role,children} = this.nav[i];
+  //     if(role==-1) continue
+  //     else{
+  //       if(role<user_role) {
+  //         this.nav.splice(i,1);
+  //         continue;
+  //       }
+  //       if(children) {
+  //         for(let c=0; c < this.nav[i].children.length; c++){
+  //           const role_c = this.nav[i].children[c].role;
+  //           if(role_c<user_role) {
+  //             this.nav[i].children.splice(c,1);
+  //             continue;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   //LanguageChagePart
   changeLang(language: string) {
     this.currentLanguage=language;
