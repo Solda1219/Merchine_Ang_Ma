@@ -53,6 +53,9 @@ export class UserService {
   gotoFirstPage() {
     this.router.navigateByUrl(this.firstPage);
   }
+  gotoPage(page) {
+    this.router.navigateByUrl(page);
+  }
   setToken(token) {
     localStorage.setItem('token', JSON.stringify(token));
   }

@@ -3,7 +3,8 @@ import { UserService } from '../../../service/user.service';
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+
 
 export interface UserData {
   id: number;
@@ -89,7 +90,7 @@ export class WipContentComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService) {
     // Create 100 users
     this.dataSource = new MatTableDataSource([]);
-
+    
   }
   ngOnInit(): void{
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
@@ -118,6 +119,10 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  navigateCreate() {
+    this.userService.gotoPage('/wip/create');
   }
 }
 
