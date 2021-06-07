@@ -1,6 +1,6 @@
 import { UserService } from '../../../service/user.service';
 
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -13,15 +13,15 @@ export interface WipData {
   customerId: number;
   contactId: number;
   notes: string;
-  wipstatus: string;
-  visitRequired: true;
-  breakDown: true;
+  wipstatus: boolean;
+  visitRequired: boolean;
+  breakDown: boolean;
   engineHoursTillNow: number;
   dateCompleted: string;
   createdBy: string;
-  isArchive: true;
+  isArchive: boolean;
   priority: number;
-  warranty: true;
+  warranty: boolean;
   location: string;
   serviceType: string;
   startDate: string;
@@ -29,15 +29,15 @@ export interface WipData {
   archiveDate: string;
   archiveBy: string;
   jobNo: number;
-  ownerFolder: true;
-  idplate: true;
+  ownerFolder: boolean;
+  idplate: boolean;
   promisedDate: string;
   ssmaTimeStamp: string;
   model: string;
   serialNumber: string;
   make: string;
   customerName: string;
-contactName: string;
+  contactName: string;
 }
 
 /** Constants used to fill up our data base. */
@@ -57,20 +57,55 @@ const NAMES: string[] = [
   styleUrls: ['wip-content.component.scss'],
   templateUrl: 'wip-content.component.html',
 })
-export class WipContentComponent implements AfterViewInit {
+export class WipContentComponent implements AfterViewInit, OnInit {
   loading = true;
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<WipData>;
+  displayedColumns: string[] = ["id",
+    "equipmentId",
+    "workShop",
+    "technician",
+    "customerId",
+    "contactId",
+    "notes",
+    "wipstatus",
+    "visitRequired",
+    "breakDown",
+    "engineHoursTillNow",
+    "dateCompleted",
+    "createdBy",
+    "isArchive",
+    "priority",
+    "warranty",
+    "location",
+    "serviceType",
+    "startDate",
+    "contractor",
+    "archiveDate",
+    "archiveBy",
+    "jobNo",
+    "ownerFolder",
+    "idplate",
+    "promisedDate",
+    "ssmaTimeStamp",
+    "model",
+    "serialNumber",
+    "make",
+    "customerName",
+    "contactName"];
+  dataSource: MatTableDataSource<any>;
   wips = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private userService: UserService) {
     // Create 100 users
+    this.dataSource = new MatTableDataSource([]);
+
+  }
+  ngOnInit(): void{
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
       res => {
-        this.loading = false;
-        this.dataSource = new MatTableDataSource(res['data']);
+
+        this.dataSource.data= res['data']
       },
       err => {
         console.log(err)
@@ -78,9 +113,8 @@ export class WipContentComponent implements AfterViewInit {
         this.userService.handleError(err)
       }
     );
-
+    
   }
-
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
