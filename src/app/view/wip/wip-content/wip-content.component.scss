@@ -2,19 +2,30 @@
   height: 75vh;
   max-width: 100%;
   overflow: auto;
-  margin: 10px
 }
 table {
   width: 100%;
 }
 
-td.mat-cell {
+.mat-row .mat-cell {
+  cursor: pointer;
   padding-right: 15px;
+}
+tr.example-element-row:hover {
+  background: whitesmoke;
+
+}
+
+tr.example-element-row:active {
+  background: #efefef;
 }
 .mat-form-field {
   font-size: 14px;
   width: 100%;
-  margin: 10px
+
+}
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
 }
 
 .mat-table-sticky-border-elem-right {

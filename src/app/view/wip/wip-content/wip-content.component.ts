@@ -3,7 +3,8 @@ import { UserService } from '../../../service/user.service';
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+
 
 export interface UserData {
   id: number;
@@ -39,16 +40,6 @@ export interface UserData {
   customerName: string;
   contactName: string;
 }
-
-/** Constants used to fill up our data base. */
-const FRUITS: string[] = [
-  'blueberry', 'lychee', 'kiwi', 'mango', 'peach', 'lime', 'pomegranate', 'pineapple'
-];
-const NAMES: string[] = [
-  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
-  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
-];
-
 /**
  * @title Data table with sorting, pagination, and filtering.
  */
@@ -99,12 +90,13 @@ export class WipContentComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService) {
     // Create 100 users
     this.dataSource = new MatTableDataSource([]);
-
+    
   }
   ngOnInit(): void{
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
       res => {
         this.loading = false;
+        console.log(res['data'])
         this.dataSource.data= res['data']
       },
       err => {
@@ -128,17 +120,10 @@ export class WipContentComponent implements AfterViewInit, OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  navigateCreate() {
+    this.userService.gotoPage('/wip/create');
+  }
 }
 
-/** Builds and returns a new User. */
-function createNewUser(id: number){
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
 
-  return {
-    id: id,
-
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}

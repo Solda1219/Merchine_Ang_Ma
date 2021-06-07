@@ -1,29 +1,206 @@
-<mat-drawer-container class="side-nav-container" autosize>
-    <mat-drawer #drawer class="side-nav-sidenav" mode="side" [opened]="true">
-      <div class="nav-tile-text-bold text-center">{{cf.translate('Group')}}</div>
-      <span class="toggle-tree-btn">
-        <button type="button" class="btn btn-block btn-outline" (click)="drawer.toggle(); _opened = !_opened">
-          <i class="cil-arrow-thick-from-right" aria-hidden="true"></i>
-        </button>
-      </span>
-       <!--Left tabs -->
-       <div style="padding: 1rem;">
-        <app-group-content (selectedItems)="selected_group = $event" [userContentChanged]="userContentChanged"></app-group-content>
+<div class= "row createForm mt-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <strong>WIP</strong> create
       </div>
-    </mat-drawer>
-    <div *ngIf="!_opened" class="hambergerDIV">
-        <span class="toggle-tree-btn-right">
-            <button type="button" class="btn btn-block btn-outline"
-              (click)="drawer.toggle(); _opened = !_opened">
-              <i class="cil-arrow-thick-from-left" aria-hidden="true"></i>
-            </button>
-        </span>
+      <div class="card-body">
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="equipment">Equipment</label>
+            <div class="col-md-9">
+              <select id="equipment" name="equipment" class="form-control">
+                <option [value]="equipment.equipmentID" *ngFor="let equipment of equipments">{{equipment.equipmentCompleteName}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="workShop">Work Shop</label>
+            <div class="col-md-9">
+              <select id="workShop" name="workShop" class="form-control">
+                <option [value]="workShop" *ngFor="let workShop of workShops">{{workShop}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="technician">Technician</label>
+            <div class="col-md-9">
+              <select id="technician" name="technician" class="form-control">
+                <option [value]="technician" *ngFor="let technician of technicians">{{technician}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="customer">Customer</label>
+            <div class="col-md-9">
+              <select id="customer" name="customer" class="form-control">
+                <option value="0">Please select</option>
+                <option value="1">Option #1</option>
+                <option value="2">Option #2</option>
+                <option value="3">Option #3</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="contact">Contact</label>
+            <div class="col-md-9">
+              <select id="contact" name="contact" class="form-control">
+                <option [value]="contact" *ngFor="let contact of contacts">{{contact}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="wipStatus">Wip Status</label>
+            <div class="col-md-9">
+              <select id="wipStatus" name="wipStatus" class="form-control">
+                <option [value]="wipStatus" *ngFor="let wipStatus of wipStatuses">{{wipStatus}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label">Yes or No</label>
+            <div class="col-md-9 col-form-label">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="option1" id="visitRequired">
+                <label class="form-check-label" for="visitRequired">
+                  Visit Required
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="option1" id="breakDown">
+                <label class="form-check-label" for="breakDown">
+                  Break Down
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="ownerFolder">
+                <label class="form-check-label" for="ownerFolder">
+                  Owner Folder
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="idPlate">
+                <label class="form-check-label" for="idPlate">
+                  Id Plate
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="isArchive">
+                <label class="form-check-label" for="isArchive">
+                  Is Archive
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="warranty">
+                <label class="form-check-label" for="warranty">
+                  Warranty
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="engineHours">Engine Hours</label>
+            <div class="col-md-9">
+              <input type="number" id="engineHours" name="engineHours" class="form-control" placeholder="Nmber">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="startDate">Start Date</label>
+            <div class="col-md-9">
+              <input class="form-control" id="startDate" type="date" name="startDate" placeholder="date">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="promisedDate">Promised Date</label>
+            <div class="col-md-9">
+              <input class="form-control" id="promisedDate" type="date" name="promisedDate" placeholder="date">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="createdBy">Created By</label>
+            <div class="col-md-9">
+              <input type="text" id="createdBy" name="createdBy" class="form-control" placeholder="Text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="priority">Priority</label>
+            <div class="col-md-9">
+              <input type="number" id="priority" name="priority" class="form-control" placeholder="Nmber">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="location">Location</label>
+            <div class="col-md-9">
+              <select id="location" name="location" class="form-control">
+                <option [value]="location" *ngFor="let location of locations">{{location}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="serviceType">Service Type</label>
+            <div class="col-md-9">
+              <select id="serviceType" name="serviceType" class="form-control">
+                <option [value]="serviceType" *ngFor="let serviceType of serviceTypes">{{serviceType}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="contractor">Contractor</label>
+            <div class="col-md-9">
+              <input type="text" id="contractor" name="contractor" class="form-control" placeholder="Contractor">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="archiveBy">Archive By</label>
+            <div class="col-md-9">
+              <input type="text" id="archiveBy" name="archiveBy" class="form-control" placeholder="Archive By">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="jobNo">Job No</label>
+            <div class="col-md-9">
+              <input type="number" id="jobNo" name="jobNo" class="form-control" placeholder="Nmber">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="model">Model</label>
+            <div class="col-md-9">
+              <input type="text" id="model" name="model" class="form-control" placeholder="Text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="serialNumber">Serial Number</label>
+            <div class="col-md-9">
+              <input type="text" id="serialNumber" name="serialNumber" class="form-control" placeholder="Text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="make">Make</label>
+            <div class="col-md-9">
+              <input type="text" id="make" name="make" class="form-control" placeholder="Text">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="notes">Notes</label>
+            <div class="col-md-9">
+              <textarea id="notes" name="notes" rows="5" class="form-control"
+                placeholder="Content.."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Create</button>
+        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Cancel</button>
+      </div>
     </div>
-    <div class="side-nav-content">
-        <div class="nav-tile-text" *ngIf="selected_group">{{cf.translate('Users Of')}}&nbsp;{{selected_group.name}}</div>
-        <div class="nav-tile-text" *ngIf="!selected_group">{{cf.translate('No group selected')}}</div>
-        <div class="content">
-          <app-user-content [group]="selected_group" (componentChange)="userContentChanged=$event"></app-user-content>
-        </div>
-    </div>
-  </mat-drawer-container>
+  </div>
+</div>
