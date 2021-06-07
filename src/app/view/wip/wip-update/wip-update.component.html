@@ -1,159 +1,207 @@
-<div class="content p-3">
-  <div>
-    <button type="button" type="submit" class="btn btn-outline-primary rigid-btn" (click)="showCreateModal()">
-      <i class="fa fa-plus fa-lg"></i>{{cf.translate('Create New')}}
-    </button>
-  </div>
-</div>
-<div class="mat-table-content-one p-3">
-  <mat-form-field>
-    <mat-label>{{cf.translate('Search')}}</mat-label>
-    <input matInput (keyup)="applyFilter($event)" [placeholder]="cf.translate('Search')" #input>
-  </mat-form-field>
-  <div class="mat-elevation-z8 checkTable">
-    <table mat-table [dataSource]="tableList" matSort>
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="select" sticky>
-        <th mat-header-cell *matHeaderCellDef class="checkTh">
-          <mat-checkbox (change)="$event ? masterToggle() : null;onSelectionChange()"
-            [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-          </mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row" class="checkTh">
-          <mat-checkbox (click)="$event.stopPropagation()"
-            (change)="$event ? selection.toggle(row) : null;onSelectionChange()" [checked]="selection.isSelected(row)"
-            [aria-label]="checkboxLabel(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
-      <ng-container [matColumnDef]="'No'">
-        <th class="NoTh" mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate('No')}} </th>
-        <td class="NoTd" mat-cell *matCellDef="let row; let i = index">
-          {{ (paginator.pageIndex * paginator.pageSize) + (i + 1)}}
-        </td>
-      </ng-container>
-      <ng-container *ngFor="let rows of tbCol; let i = index">
-        <ng-container *ngIf="specialCol.indexOf(rows)==-1" [matColumnDef]="rows">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
-          <td mat-cell *matCellDef="let row"> {{row[rows]}} </td>
-        </ng-container>
-        <!-- <ng-container *ngIf="rows=='permission'" [matColumnDef]="'permission'">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{cf.translate(tbHeader[i])}} </th>
-            <td mat-cell *matCellDef="let row"> 
-              <mat-form-field appearance="fill">
-                <mat-label>Toppings</mat-label>
-                <mat-select multiple>
-                  <mat-select-trigger>
-                    {{toppings.value ? toppings.value[0] : ''}}
-                    <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
-                      (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
-                    </span>
-                  </mat-select-trigger>
-                  <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-          </ng-container> -->
-      </ng-container>
-      <!-- action -->
-      <ng-container matColumnDef="Action" stickyEnd>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="stickyOperationHeader-sm">
-          {{cf.translate('Action')}} </th>
-        <td mat-cell *matCellDef="let row" class="stickyOperationCell-sm" style="width: 100px;">
-          <div class="btnRow">
-            <!-- <div class="btn-group">
-              <label class="switch switch-label switch-pill switch-outline-primary m-0" title="Active status">
-                <input type="checkbox" [checked]="row['status']==1" class="switch-input" (change)="status(row)" >
-                <span data-checked="On" data-unchecked="Off" class="switch-slider"></span>
-              </label>
-            </div> -->
-            <div class="btn-group">
-              <button type="button" class="btn btn-pill btn-danger btnIconSm" (click)="willdelete=row;warningModal.show()" title="delete"><i
-                  class="fa fa-trash fa-lg"></i></button>
+<div class= "row createForm mt-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <strong>WIP</strong> update
+      </div>
+      <div class="card-body">
+        <form [formGroup]="formGroup" #myform="ngForm" (ngSubmit)="update()">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="equipment">Equipment</label>
+            <div class="col-md-9">
+              <select id="equipment" name="equipment" class="form-control" formControlName= "equipmentId">
+                <option [value]="equipment.equipmentID" *ngFor="let equipment of equipments">{{equipment.equipmentCompleteName}}</option>
+              </select>
             </div>
-            <div class="btn-group">
-              <button type="button" class="btn btn-pill btn-warning btnIconSm" (click)="showEditModal(row)" title="edit"><i
-                  class="fa fa-edit fa-lg"></i></button>
-            </div>
-            <!-- <div class="btn-group">
-              <button type="button" class="btn btn-pill btn-success btnIconSm" (click)="resetPassword(row)" title="Reset password"><i
-                  class="fa fa-expeditedssl fa-lg"></i></button>
-            </div> -->
           </div>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <!-- Row shown when there is no matching data. -->
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No Item</td>
-      </tr>
-    </table>
-  </div>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-</div>
-<!-- loading -->
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
-
-<!-- modal -->
-<div bsModal [config]="{backdrop: 'static',  keyboard: false}" #createModal="bs-modal" class="modal fade" tabindex="-1"
-  role="dialog" aria-labelledby="streamModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form *ngIf="formGroup" [formGroup]="formGroup" (submit)="checkForm()&&(formGroup.value['id']?edit():create())">
-        <div class="modal-header">
-          <h5 class="modal-title">{{!formGroup.value.id?cf.translate('Create Group User Of'):cf.translate('Edit Group User Of')}}&nbsp;{{group.name}}</h5>
-          <button type="button" class="close" (click)="createModal.hide();" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body modalWidthHeight">
-          <ng-container *ngFor="let item of formSetting">
-            <div *ngIf="item.status!=0" class="form-group row  m-0 mb-4">
-              <label class="fixWidthLabel">{{cf.translate(item.label)}}</label>
-              <div class="fixInputDiv">
-                <input type="text" class="form-control" [placeholder]="cf.translate(item.placeText)"
-                  [formControlName]="item.name" [readonly]="item.status==3">
-                <div
-                  *ngIf="formGroup.get(item.name).invalid && (formGroup.get(item.name).dirty || formGroup.get(item.name).touched)"
-                  class="invalid-feedback" style="display: block;">
-                  {{cf.translate(item.error)}}
-                </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="workShop">Work Shop</label>
+            <div class="col-md-9">
+              <select id="workShop" name="workShop" class="form-control" formControlName= "workShop">
+                <option [value]="workShop" *ngFor="let workShop of workShops">{{workShop}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="technician">Technician</label>
+            <div class="col-md-9">
+              <select id="technician" name="technician" class="form-control" formControlName= "technician">
+                <option [value]="technician" *ngFor="let technician of technicians">{{technician}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="customer">Customer</label>
+            <div class="col-md-9">
+              <select id="customer" name="customer" class="form-control" formControlName= "customerId">
+                <option value="0">Please select</option>
+                <option value="1">Option #1</option>
+                <option value="2">Option #2</option>
+                <option value="3">Option #3</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="contact">Contact</label>
+            <div class="col-md-9">
+              <select id="contact" name="contact" class="form-control" formControlName= "contactId">
+                <option [value]="contact" *ngFor="let contact of contacts">{{contact}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="wipStatus">Wip Status</label>
+            <div class="col-md-9">
+              <select id="wipStatus" name="wipStatus" class="form-control" formControlName= "wipstatus">
+                <option [value]="wipStatus" *ngFor="let wipStatus of wipStatuses">{{wipStatus}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label">Yes or No</label>
+            <div class="col-md-9 col-form-label">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="option1" id="visitRequired" formControlName= "visitRequired">
+                <label class="form-check-label" for="visitRequired">
+                  Visit Required
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="option1" id="breakDown" formControlName= "breakDown">
+                <label class="form-check-label" for="breakDown">
+                  Break Down
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="ownerFolder" formControlName= "ownerFolder">
+                <label class="form-check-label" for="ownerFolder">
+                  Owner Folder
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="idPlate" formControlName= "idplate">
+                <label class="form-check-label" for="idPlate">
+                  Id Plate
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="isArchive" formControlName= "isArchive">
+                <label class="form-check-label" for="isArchive">
+                  Is Archive
+                </label>
+              </div>
+              <div class="form-check checkbox">
+                <input class="form-check-input" type="checkbox" value="option1" id="warranty" formControlName= "warranty">
+                <label class="form-check-label" for="warranty">
+                  Warranty
+                </label>
               </div>
             </div>
-          </ng-container>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary"
-            (click)="createModal.hide()">{{cf.translate("Close")}}</button>
-          <button type="submit"
-            class="btn btn-primary">{{!formGroup.value.id?cf.translate('Create'):cf.translate('Edit')}}</button>
-        </div>
-      </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- warning modal -->
-<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-danger" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{cf.translate('Are you sure?')}}</h4>
-        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="engineHours">Engine Hours</label>
+            <div class="col-md-9">
+              <input type="number" id="engineHours" name="engineHours" class="form-control" placeholder="Nmber" formControlName= "engineHoursTillNow">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="startDate">Start Date</label>
+            <div class="col-md-9">
+              <input class="form-control" id="startDate" type="date" name="startDate" placeholder="date" formControlName= "startDate">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="promisedDate">Promised Date</label>
+            <div class="col-md-9">
+              <input class="form-control" id="promisedDate" type="date" name="promisedDate" placeholder="date" formControlName= "promisedDate">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="createdBy">Created By</label>
+            <div class="col-md-9">
+              <input type="text" id="createdBy" name="createdBy" class="form-control" placeholder="Text" formControlName= "createdBy">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="priority">Priority</label>
+            <div class="col-md-9">
+              <input type="number" id="priority" name="priority" class="form-control" placeholder="Nmber" formControlName= "priority">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="location">Location</label>
+            <div class="col-md-9">
+              <select id="location" name="location" class="form-control" formControlName= "location">
+                <option [value]="location" *ngFor="let location of locations">{{location}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="serviceType">Service Type</label>
+            <div class="col-md-9">
+              <select id="serviceType" name="serviceType" class="form-control" formControlName= "serviceType">
+                <option [value]="serviceType" *ngFor="let serviceType of serviceTypes">{{serviceType}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="contractor">Contractor</label>
+            <div class="col-md-9">
+              <input type="text" id="contractor" name="contractor" class="form-control" placeholder="Contractor" formControlName= "contractor">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="archiveBy">Archive By</label>
+            <div class="col-md-9">
+              <input type="text" id="archiveBy" name="archiveBy" class="form-control" placeholder="Archive By" formControlName= "archiveBy">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="jobNo">Job No</label>
+            <div class="col-md-9">
+              <input type="number" id="jobNo" name="jobNo" class="form-control" placeholder="Nmber" formControlName= "jobNo">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="model">Model</label>
+            <div class="col-md-9">
+              <input type="text" id="model" name="model" class="form-control" placeholder="Text" formControlName= "model">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="serialNumber">Serial Number</label>
+            <div class="col-md-9">
+              <input type="text" id="serialNumber" name="serialNumber" class="form-control" placeholder="Text" formControlName= "serialNumber">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="make">Make</label>
+            <div class="col-md-9">
+              <input type="text" id="make" name="make" class="form-control" placeholder="Text" formControlName= "make">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="notes">Notes</label>
+            <div class="col-md-9">
+              <textarea id="notes" name="notes" rows="5" class="form-control"
+                placeholder="Content.." formControlName= "notes"></textarea>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Update</button>
+            <button type="reset" class="btn btn-sm btn-danger" (click)= "gotoWipContent()"><i class="fa fa-ban"></i> Cancel</button>
+          </div>
+        </form>
       </div>
-      <div class="modal-body">
-        <p>{{cf.translate("This item will be deleted permenantly.")}}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="warningModal.hide()">{{cf.translate("no")}}</button>
-        <button type="button" class="btn btn-danger"
-          (click)="warningModal.hide();del()">{{cf.translate("yes")}}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+      
+    </div>
+  </div>
+</div>

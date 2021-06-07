@@ -1,13 +1,8 @@
 import { Component, OnInit, Input,Output, EventEmitter, OnChanges, SimpleChange, ViewChild, ElementRef } from '@angular/core';
 import { CommonFunctionService } from '../../../function/commonFunction.service';
+import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { UserService } from '../../../service/user.service';
-//import for table widget and modals
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-wip-update',
@@ -16,161 +11,204 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 })
 export class WipUpdateComponent implements OnInit {
   loading;
-  @Input('group') group;
-  item = [];
-  tbHeader = ['Email'];
-  tbCol = ['email'];
-  displayedColumns: string[] = ['No','email','Action'];
-  specialCol = ['permission']
-  tableList: MatTableDataSource<any>;
-  selection = new SelectionModel<any>(true, []);
+  detailedWip= {};
+  equipments = [];
+  workShops = [];
+  technicians = [];
+  customers = [];
+  contacts = [];
+  wipStatuses = [];
+  locations = [];
+  serviceTypes = [];
+
   formGroup: FormGroup;
-  formSetting = [];
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @Output() selectedItems = new EventEmitter();
-  @Output() componentChange = new EventEmitter();
-  @ViewChild('createModal') public createModal: ModalDirective;
-  @ViewChild('warningModal') public warningModal: ModalDirective;
-  willdelete;
   constructor(
     public cf: CommonFunctionService,
     private userService: UserService,
     private _formBuilder: FormBuilder,
-  ) {
+    private actRoute: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    var wipId= this.actRoute.snapshot.params.WipId;
+    this.userService.getRequest('api/Wip/GetWipDetailByID?wipId='+ wipId).subscribe(
+      res => {
+        this.detailedWip = res['data'];
+        this.formGroup = this._formBuilder.group({
+          id: [this.detailedWip['id'], Validators.required],
+          equipmentId: [this.detailedWip['equipmentId'], Validators.required],
+          workShop: [this.detailedWip['workShop'], Validators.required],
+          technician: [this.detailedWip['technician'], Validators.required],
+          customerId: [this.detailedWip['customerId']],
+          contactId: [this.detailedWip['contactId']],
+          notes: [this.detailedWip['notes']],
+          wipstatus: [this.detailedWip['wipstatus']],
+          visitRequired: [this.detailedWip['visitRequired']],
+          breakDown: [this.detailedWip['breakDown']],
+          engineHoursTillNow: [this.detailedWip['engineHoursTillNow']],
+          dateCompleted: ["2021-06-07T17:00:02.770Z"],
+          createdBy: [this.detailedWip['createdBy'], Validators.required],
+          isArchive: [this.detailedWip['isArchive']],
+          priority: [this.detailedWip['priority']],
+          warranty: [this.detailedWip['warranty']],
+          location: [this.detailedWip['location'], Validators.required],
+          serviceType: [this.detailedWip['serviceType'], Validators.required],
+          startDate: [this.detailedWip['startDate'], Validators.required],
+          contractor: [this.detailedWip['contractor'], Validators.required],
+          archiveDate: ["2021-06-07T17:00:02.770Z"],
+          archiveBy: [this.detailedWip['archiveBy'], Validators.required],
+          jobNo: [this.detailedWip['jobNo']],
+          ownerFolder: [this.detailedWip['ownerFolder']],
+          idplate: [this.detailedWip['idplate']],
+          promisedDate: [this.detailedWip['promisedDate'], Validators.required],
+          // ssmaTimeStamp: [this.detailedWip['contactId'], Validators.required],
+          model: [this.detailedWip['model'], Validators.required],
+          serialNumber: [this.detailedWip['serialNumber'], Validators.required],
+          make: [this.detailedWip['make'], Validators.required],
+          customerName: [this.detailedWip['customerName']],
+          contactName: [this.detailedWip['contactName']],
+        });
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    var currentTime= new Date();
+    var currentTimeString= this.cf.getChineseTime(currentTime)
+    this.formGroup = this._formBuilder.group({
+      id: [this.detailedWip['id'], Validators.required],
+      equipmentId: [this.detailedWip['equipmentId'], Validators.required],
+      workShop: [this.detailedWip['workShop'], Validators.required],
+      technician: [this.detailedWip['technician'], Validators.required],
+      customerId: [this.detailedWip['customerId']],
+      contactId: [this.detailedWip['contactId']],
+      notes: [this.detailedWip['notes']],
+      wipstatus: [this.detailedWip['wipstatus']],
+      visitRequired: [this.detailedWip['visitRequired']],
+      breakDown: [this.detailedWip['breakDown']],
+      engineHoursTillNow: [this.detailedWip['engineHoursTillNow']],
+      dateCompleted: ["2021-06-07T17:00:02.770Z"],
+      createdBy: [this.detailedWip['createdBy'], Validators.required],
+      isArchive: [this.detailedWip['isArchive']],
+      priority: [this.detailedWip['priority']],
+      warranty: [this.detailedWip['warranty']],
+      location: [this.detailedWip['location'], Validators.required],
+      serviceType: [this.detailedWip['serviceType'], Validators.required],
+      startDate: [this.detailedWip['startDate'], Validators.required],
+      contractor: [this.detailedWip['contractor'], Validators.required],
+      archiveDate: ["2021-06-07T17:00:02.770Z"],
+      archiveBy: [this.detailedWip['archiveBy'], Validators.required],
+      jobNo: [this.detailedWip['jobNo']],
+      ownerFolder: [this.detailedWip['ownerFolder']],
+      idplate: [this.detailedWip['idplate']],
+      promisedDate: [this.detailedWip['promisedDate'], Validators.required],
+      // ssmaTimeStamp: [this.detailedWip['contactId'], Validators.required],
+      model: [this.detailedWip['model'], Validators.required],
+      serialNumber: [this.detailedWip['serialNumber'], Validators.required],
+      make: [this.detailedWip['make'], Validators.required],
+      customerName: [this.detailedWip['customerName']],
+      contactName: [this.detailedWip['contactName']],
+    });
+    this.loading= true;
+    this.userService.getRequest('api/Equipment/GetEquipmentList').subscribe(
+      res => {
+        this.equipments = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    this.userService.getRequest('api/Wip/GetWorkshops').subscribe(
+      res => {
+        this.workShops = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    this.userService.getRequest('api/Wip/GetTechnicians').subscribe(
+      res => {
+        this.technicians = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    // customers
+
+    //contacts
+    
+    this.userService.getRequest('api/Customer/GetCustomerContacts').subscribe(
+      res => {
+        this.contacts = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    this.userService.getRequest('api/Wip/GetWipStatuses').subscribe(
+      res => {
+        this.wipStatuses = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    this.userService.getRequest('api/Wip/GetLocaitons').subscribe(
+      res => {
+        this.locations = res['data'];
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+    this.userService.getRequest('api/Wip/GetWipServiceTypes').subscribe(
+      res => {
+        this.serviceTypes = res['data'];
+        this.loading= false;
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
   }
-  async ngOnInit() {
-  }
-  ngOnChanges(changes: { [key: string]: SimpleChange }): any {
-    if (changes["group"]) {
-      this.loading = true;
-      this.search()
-      this.loading = false;
-    }
-  }
-  async search() {
-    if(!this.group) return;
-    try {
-      const res = await this.userService.postRequest('_api/group/user/getUser',this.group).toPromise()
-      this.item = res['result'];
-      this.setTableList();
-    } catch (err) {
-      console.log(err)
-      this.userService.handleError(err)
-    }
-  }
-  showCreateModal(){
-    if(!this.group){
-      this.userService.errorMessage("Please select group.");
-      return
-    }
-    this.formSet();
-    this.createModal.show();
-  }
-  showEditModal(item){
-    this.formSet(item);
-    this.createModal.show();
-  }
-  checkForm(){
+  update() {
     if(!this.formGroup.valid){
-      this.userService.errorMessage('Please input items correctly');
-      return false
-    }else return true;
-  }
-  formSet(item=null) {
-    if(item==null){
-      this.formGroup = this._formBuilder.group({
-        id: [''],
-        email: ['',[Validators.required,Validators.email]],
-        group_id:[this.group.id]
-      });
-      this.formSetting = [//0-hidden,1-enabled,2-disabled,3-readonly
-        {label:'',name:'id',placeText:'', required:true,status:0,error:'This field is required.'},
-        {label:'Email',name:'email',placeText:'Email',required:true,status:1,error:'Please input valid email.'},
-      ];
-    }else{
-      this.formGroup = this._formBuilder.group({
-        id: [item.id],
-        email: [item.email,[Validators.required,Validators.email]],
-        group_id:[this.group.id]
-      });
-      this.formSetting = [//0-hidden,1-enabled,2-disabled,3-readonly
-        {label:'',name:'id',placeText:'', required:true,status:0, error:''},
-        {label:'Email',name:'email',placeText:'Email',required:true,status:1, error:'This field is required.'},
-      ];
+      this.userService.errorMessage("Please input all input field!");
+      return;
     }
-  }
-  async create(){
-    try {
-      const res = await this.userService.postRequest('_api/group/user/createUser',this.formGroup.value).toPromise()
-      this.userService.handleSuccess(res['message']);
-      await this.search()
-      this.componentChange.emit(Date.now())
-    } catch (err) {
-      this.userService.handleError(err)
-    }
-  }
-  async edit(){
-    try {
-      const res = await this.userService.postRequest('_api/group/user/editUser',this.formGroup.value).toPromise()
-      this.userService.handleSuccess(res['message']);
-      await this.search()
-    } catch (err) {
-      this.userService.handleError(err)
-    }
-  }
-  async del(){
-    this.loading = true;
-    try {
-      const res = await this.userService.postRequest('_api/group/user/delUser',this.willdelete).toPromise()
-      this.userService.handleSuccess(res['message']);
-      await this.search()
-      this.componentChange.emit(Date.now())
-    } catch (err) {
-      this.userService.handleError(err)
-    }
-    this.loading = false;
-  }
-  //table
-  setTableList() {
-    this.tableList = new MatTableDataSource(this.item)
-    this.tableList.paginator = this.paginator;
-    this.tableList.sort = this.sort;
-  }
-  //mat-table
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.tableList.filter = filterValue.trim().toLowerCase();
 
-    if (this.tableList.paginator) {
-      this.tableList.paginator.firstPage();
-    }
-  }
-  /** Whether the number of selected elements matches the total number of rows. */
-  onSelectionChange(){
-    const selected = this.tableList.data.filter(t=>this.selection.isSelected(t))
-    this.selectedItems.emit(selected)
-  }
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.tableList.data.length;
-    return numSelected === numRows;
-  }
+    const wipData= this.formGroup.value;
+    this.userService.postRequest('/api/Wip/UpdateWip', wipData, false).subscribe(
+      res => {
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.tableList.data.forEach(row => this.selection.select(row));
+        this.userService.handleSuccess("WIP updated successfully!");
+        this.gotoWipContent()
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    )
   }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: any): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  gotoWipContent(){
+    this.userService.gotoPage('/wip/content');
   }
 }
-
-

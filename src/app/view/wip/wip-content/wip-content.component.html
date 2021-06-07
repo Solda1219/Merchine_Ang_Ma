@@ -1,9 +1,9 @@
 <div class= 'mt-4 ml-1'>
   <div class= 'row'>
-    <div class="col-sm-3 col-md-3">
+    <div class="col-sm-3 col-6 col-md-3">
       <button type="button" (click)="navigateCreate()" class="btn btn-block btn-primary">Create</button>
     </div>
-    <mat-form-field class= 'col-md-8'>
+    <mat-form-field class= 'col-md-8 col-6'>
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
     </mat-form-field>
@@ -14,33 +14,33 @@
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.id}} </td>
       </ng-container>
 
       <ng-container matColumnDef="equipmentId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Equipment Id </th>
-        <td mat-cell *matCellDef="let row"> {{row.equipmentId}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.equipmentId}} </td>
       </ng-container>
 
       <ng-container matColumnDef="workShop">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> WorkShop </th>
-        <td mat-cell *matCellDef="let row"> {{row.workShop}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.workShop}} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="technician">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Technician </th>
-        <td mat-cell *matCellDef="let row"> {{row.technician}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.technician}} </td>
       </ng-container>
 
       <ng-container matColumnDef="customerId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Id </th>
-        <td mat-cell *matCellDef="let row"> {{row.customerId}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.customerId}} </td>
       </ng-container>
 
       <ng-container matColumnDef="contactId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Id </th>
-        <td mat-cell *matCellDef="let row"> {{row.contactId}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.contactId}} </td>
       </ng-container>
 
       <ng-container matColumnDef="notes">
@@ -49,82 +49,82 @@
       </ng-container>
       <ng-container matColumnDef="wipstatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Wipstatus </th>
-        <td mat-cell *matCellDef="let row"> {{row.wipstatus}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.wipstatus}} </td>
       </ng-container>
 
       <ng-container matColumnDef="visitRequired">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Visit Required </th>
-        <td mat-cell *matCellDef="let row"> {{row.visitRequired}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.visitRequired}} </td>
       </ng-container>
 
       <ng-container matColumnDef="breakDown">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> BreakDown </th>
-        <td mat-cell *matCellDef="let row"> {{row.breakDown}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.breakDown}} </td>
       </ng-container>
 
       <ng-container matColumnDef="engineHoursTillNow">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> EngineHoursTillNow </th>
-        <td mat-cell *matCellDef="let row"> {{row.engineHoursTillNow}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.engineHoursTillNow}} </td>
       </ng-container>
 
       <ng-container matColumnDef="dateCompleted">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> DateCompleted </th>
-        <td mat-cell *matCellDef="let row"> {{row.dateCompleted}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.dateCompleted}} </td>
       </ng-container>
 
       <ng-container matColumnDef="createdBy">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> CreatedBy </th>
-        <td mat-cell *matCellDef="let row"> {{row.createdBy}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.createdBy}} </td>
       </ng-container>
 
       <ng-container matColumnDef="isArchive">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> IsArchive </th>
-        <td mat-cell *matCellDef="let row"> {{row.isArchive}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.isArchive}} </td>
       </ng-container>
 
       <ng-container matColumnDef="priority">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
-        <td mat-cell *matCellDef="let row"> {{row.priority}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.priority}} </td>
       </ng-container>
 
       <ng-container matColumnDef="warranty">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Warranty </th>
-        <td mat-cell *matCellDef="let row"> {{row.warranty}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.warranty}} </td>
       </ng-container>
 
       <ng-container matColumnDef="location">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-        <td mat-cell *matCellDef="let row"> {{row.location}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.location}} </td>
       </ng-container>
 
       <ng-container matColumnDef="serviceType">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Type </th>
-        <td mat-cell *matCellDef="let row"> {{row.serviceType}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.serviceType}} </td>
       </ng-container>
 
       <ng-container matColumnDef="startDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
-        <td mat-cell *matCellDef="let row"> {{row.startDate}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.startDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="contractor">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Contractor </th>
-        <td mat-cell *matCellDef="let row"> {{row.contractor}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.contractor}} </td>
       </ng-container>
 
       <ng-container matColumnDef="archiveDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ArchiveDate </th>
-        <td mat-cell *matCellDef="let row"> {{row.archiveDate}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.archiveDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="archiveBy">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ArchiveBy </th>
-        <td mat-cell *matCellDef="let row"> {{row.archiveBy}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.archiveBy}} </td>
       </ng-container>
 
       <ng-container matColumnDef="jobNo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Job No </th>
-        <td mat-cell *matCellDef="let row"> {{row.jobNo}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.jobNo}} </td>
       </ng-container>
 
       <ng-container matColumnDef="ownerFolder">
@@ -134,7 +134,7 @@
 
       <ng-container matColumnDef="idplate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Idplate </th>
-        <td mat-cell *matCellDef="let row"> {{row.idplate}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.idplate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="promisedDate">
@@ -144,36 +144,44 @@
 
       <ng-container matColumnDef="ssmaTimeStamp">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> SsmaTimeStamp </th>
-        <td mat-cell *matCellDef="let row"> {{row.ssmaTimeStamp}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.ssmaTimeStamp}} </td>
       </ng-container>
 
       <ng-container matColumnDef="model">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Model </th>
-        <td mat-cell *matCellDef="let row"> {{row.model}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.model}} </td>
       </ng-container>
 
       <ng-container matColumnDef="serialNumber">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial Number </th>
-        <td mat-cell *matCellDef="let row"> {{row.serialNumber}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.serialNumber}} </td>
       </ng-container>
 
       <ng-container matColumnDef="make">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Make </th>
-        <td mat-cell *matCellDef="let row"> {{row.make}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.make}} </td>
       </ng-container>
 
       <ng-container matColumnDef="customerName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
-        <td mat-cell *matCellDef="let row"> {{row.customerName}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.customerName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="contactName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ContactName </th>
-        <td mat-cell *matCellDef="let row"> {{row.contactName}} </td>
+        <td mat-cell *matCellDef="let row" (click)= "edit(row.id)"> {{row.contactName}} </td>
       </ng-container>
 
+      <ng-container matColumnDef= "action">
+        <th mat-header-cel *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let row"> 
+          <button type="button" (click)= "deleteWip(row.id)" class="btn btn-block btn-danger">Delete</button>
+        </td>
+      </ng-container>
+
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
 
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row example-element-row" *matNoDataRow>

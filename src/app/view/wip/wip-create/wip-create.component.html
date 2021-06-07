@@ -5,11 +5,11 @@
         <strong>WIP</strong> create
       </div>
       <div class="card-body">
-        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <form [formGroup]="formGroup" #myform="ngForm" (ngSubmit)="create()">
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="equipment">Equipment</label>
             <div class="col-md-9">
-              <select id="equipment" name="equipment" class="form-control">
+              <select id="equipment" name="equipment" class="form-control" formControlName= "equipmentId">
                 <option [value]="equipment.equipmentID" *ngFor="let equipment of equipments">{{equipment.equipmentCompleteName}}</option>
               </select>
             </div>
@@ -17,7 +17,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="workShop">Work Shop</label>
             <div class="col-md-9">
-              <select id="workShop" name="workShop" class="form-control">
+              <select id="workShop" name="workShop" class="form-control" formControlName= "workShop">
                 <option [value]="workShop" *ngFor="let workShop of workShops">{{workShop}}
                 </option>
               </select>
@@ -26,7 +26,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="technician">Technician</label>
             <div class="col-md-9">
-              <select id="technician" name="technician" class="form-control">
+              <select id="technician" name="technician" class="form-control" formControlName= "technician">
                 <option [value]="technician" *ngFor="let technician of technicians">{{technician}}
                 </option>
               </select>
@@ -35,7 +35,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="customer">Customer</label>
             <div class="col-md-9">
-              <select id="customer" name="customer" class="form-control">
+              <select id="customer" name="customer" class="form-control" formControlName= "customerId">
                 <option value="0">Please select</option>
                 <option value="1">Option #1</option>
                 <option value="2">Option #2</option>
@@ -46,7 +46,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="contact">Contact</label>
             <div class="col-md-9">
-              <select id="contact" name="contact" class="form-control">
+              <select id="contact" name="contact" class="form-control" formControlName= "contactId">
                 <option [value]="contact" *ngFor="let contact of contacts">{{contact}}
                 </option>
               </select>
@@ -55,7 +55,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="wipStatus">Wip Status</label>
             <div class="col-md-9">
-              <select id="wipStatus" name="wipStatus" class="form-control">
+              <select id="wipStatus" name="wipStatus" class="form-control" formControlName= "wipstatus">
                 <option [value]="wipStatus" *ngFor="let wipStatus of wipStatuses">{{wipStatus}}
                 </option>
               </select>
@@ -65,37 +65,37 @@
             <label class="col-md-3 col-form-label">Yes or No</label>
             <div class="col-md-9 col-form-label">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="option1" id="visitRequired">
+                <input class="form-check-input" type="checkbox" value="option1" id="visitRequired" formControlName= "visitRequired">
                 <label class="form-check-label" for="visitRequired">
                   Visit Required
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="option1" id="breakDown">
+                <input class="form-check-input" type="checkbox" value="option1" id="breakDown" formControlName= "breakDown">
                 <label class="form-check-label" for="breakDown">
                   Break Down
                 </label>
               </div>
               <div class="form-check checkbox">
-                <input class="form-check-input" type="checkbox" value="option1" id="ownerFolder">
+                <input class="form-check-input" type="checkbox" value="option1" id="ownerFolder" formControlName= "ownerFolder">
                 <label class="form-check-label" for="ownerFolder">
                   Owner Folder
                 </label>
               </div>
               <div class="form-check checkbox">
-                <input class="form-check-input" type="checkbox" value="option1" id="idPlate">
+                <input class="form-check-input" type="checkbox" value="option1" id="idPlate" formControlName= "idplate">
                 <label class="form-check-label" for="idPlate">
                   Id Plate
                 </label>
               </div>
               <div class="form-check checkbox">
-                <input class="form-check-input" type="checkbox" value="option1" id="isArchive">
+                <input class="form-check-input" type="checkbox" value="option1" id="isArchive" formControlName= "isArchive">
                 <label class="form-check-label" for="isArchive">
                   Is Archive
                 </label>
               </div>
               <div class="form-check checkbox">
-                <input class="form-check-input" type="checkbox" value="option1" id="warranty">
+                <input class="form-check-input" type="checkbox" value="option1" id="warranty" formControlName= "warranty">
                 <label class="form-check-label" for="warranty">
                   Warranty
                 </label>
@@ -105,39 +105,39 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="engineHours">Engine Hours</label>
             <div class="col-md-9">
-              <input type="number" id="engineHours" name="engineHours" class="form-control" placeholder="Nmber">
+              <input type="number" id="engineHours" name="engineHours" class="form-control" placeholder="Nmber" formControlName= "engineHoursTillNow">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="startDate">Start Date</label>
             <div class="col-md-9">
-              <input class="form-control" id="startDate" type="date" name="startDate" placeholder="date">
+              <input class="form-control" id="startDate" type="date" name="startDate" placeholder="date" formControlName= "startDate">
               <span class="help-block">Please enter a valid date</span>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="promisedDate">Promised Date</label>
             <div class="col-md-9">
-              <input class="form-control" id="promisedDate" type="date" name="promisedDate" placeholder="date">
+              <input class="form-control" id="promisedDate" type="date" name="promisedDate" placeholder="date" formControlName= "promisedDate">
               <span class="help-block">Please enter a valid date</span>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="createdBy">Created By</label>
             <div class="col-md-9">
-              <input type="text" id="createdBy" name="createdBy" class="form-control" placeholder="Text">
+              <input type="text" id="createdBy" name="createdBy" class="form-control" placeholder="Text" formControlName= "createdBy">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="priority">Priority</label>
             <div class="col-md-9">
-              <input type="number" id="priority" name="priority" class="form-control" placeholder="Nmber">
+              <input type="number" id="priority" name="priority" class="form-control" placeholder="Nmber" formControlName= "priority">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="location">Location</label>
             <div class="col-md-9">
-              <select id="location" name="location" class="form-control">
+              <select id="location" name="location" class="form-control" formControlName= "location">
                 <option [value]="location" *ngFor="let location of locations">{{location}}
                 </option>
               </select>
@@ -146,7 +146,7 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="serviceType">Service Type</label>
             <div class="col-md-9">
-              <select id="serviceType" name="serviceType" class="form-control">
+              <select id="serviceType" name="serviceType" class="form-control" formControlName= "serviceType">
                 <option [value]="serviceType" *ngFor="let serviceType of serviceTypes">{{serviceType}}
                 </option>
               </select>
@@ -155,52 +155,53 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="contractor">Contractor</label>
             <div class="col-md-9">
-              <input type="text" id="contractor" name="contractor" class="form-control" placeholder="Contractor">
+              <input type="text" id="contractor" name="contractor" class="form-control" placeholder="Contractor" formControlName= "contractor">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="archiveBy">Archive By</label>
             <div class="col-md-9">
-              <input type="text" id="archiveBy" name="archiveBy" class="form-control" placeholder="Archive By">
+              <input type="text" id="archiveBy" name="archiveBy" class="form-control" placeholder="Archive By" formControlName= "archiveBy">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="jobNo">Job No</label>
             <div class="col-md-9">
-              <input type="number" id="jobNo" name="jobNo" class="form-control" placeholder="Nmber">
+              <input type="number" id="jobNo" name="jobNo" class="form-control" placeholder="Nmber" formControlName= "jobNo">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="model">Model</label>
             <div class="col-md-9">
-              <input type="text" id="model" name="model" class="form-control" placeholder="Text">
+              <input type="text" id="model" name="model" class="form-control" placeholder="Text" formControlName= "model">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="serialNumber">Serial Number</label>
             <div class="col-md-9">
-              <input type="text" id="serialNumber" name="serialNumber" class="form-control" placeholder="Text">
+              <input type="text" id="serialNumber" name="serialNumber" class="form-control" placeholder="Text" formControlName= "serialNumber">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="make">Make</label>
             <div class="col-md-9">
-              <input type="text" id="make" name="make" class="form-control" placeholder="Text">
+              <input type="text" id="make" name="make" class="form-control" placeholder="Text" formControlName= "make">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="notes">Notes</label>
             <div class="col-md-9">
               <textarea id="notes" name="notes" rows="5" class="form-control"
-                placeholder="Content.."></textarea>
+                placeholder="Content.." formControlName= "notes"></textarea>
             </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Create</button>
+            <button type="reset" class="btn btn-sm btn-danger" (click)= "gotoWipContent()"><i class="fa fa-ban"></i> Cancel</button>
           </div>
         </form>
       </div>
-      <div class="card-footer">
-        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Create</button>
-        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Cancel</button>
-      </div>
+      
     </div>
   </div>
 </div>
