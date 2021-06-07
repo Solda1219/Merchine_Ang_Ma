@@ -1,22 +1,12 @@
 import { UserService } from '../../../service/user.service';
 
-<<<<<<< HEAD
-
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-=======
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
->>>>>>> b25a0409f569db4244c84ac55a9bac77919c928d
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
 export interface UserData {
   id: number;
-<<<<<<< HEAD
-  name: string;
-  progress: string;
-  fruit: string;
-=======
   equipmentId: number;
   workShop: string;
   technician: string;
@@ -48,7 +38,6 @@ export interface UserData {
   make: string;
   customerName: string;
   contactName: string;
->>>>>>> b25a0409f569db4244c84ac55a9bac77919c928d
 }
 
 /** Constants used to fill up our data base. */
@@ -68,12 +57,6 @@ const NAMES: string[] = [
   styleUrls: ['wip-content.component.scss'],
   templateUrl: 'wip-content.component.html',
 })
-<<<<<<< HEAD
-export class WipContentComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<any>;
-
-=======
 export class WipContentComponent implements AfterViewInit, OnInit {
   loading = true;
   displayedColumns: string[] = ["id",
@@ -110,26 +93,18 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     "contactName"];
   dataSource: MatTableDataSource<any>;
   wips = [];
->>>>>>> b25a0409f569db4244c84ac55a9bac77919c928d
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private userService: UserService) {
     // Create 100 users
-<<<<<<< HEAD
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
-    console.log(this.dataSource);
-=======
     this.dataSource = new MatTableDataSource([]);
 
   }
   ngOnInit(): void{
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
       res => {
-
+        this.loading = false;
         this.dataSource.data= res['data']
       },
       err => {
@@ -138,8 +113,7 @@ export class WipContentComponent implements AfterViewInit, OnInit {
         this.userService.handleError(err)
       }
     );
-    
->>>>>>> b25a0409f569db4244c84ac55a9bac77919c928d
+
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
