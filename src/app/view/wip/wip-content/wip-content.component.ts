@@ -81,7 +81,8 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     "serialNumber",
     "make",
     "customerName",
-    "contactName"];
+    "contactName",
+    "action"];
   dataSource: MatTableDataSource<any>;
   wips = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -96,7 +97,6 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
       res => {
         this.loading = false;
-        console.log(res['data'])
         this.dataSource.data= res['data']
       },
       err => {
@@ -123,6 +123,12 @@ export class WipContentComponent implements AfterViewInit, OnInit {
 
   navigateCreate() {
     this.userService.gotoPage('/wip/create');
+  }
+  edit(id){
+    this.userService.gotoPage('/wip/update/'+ id);
+  }
+  deleteWip(id){
+    console.log("will be deleted ", id);
   }
 }
 

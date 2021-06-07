@@ -11,22 +11,16 @@ table {
   cursor: pointer;
   padding-right: 15px;
 }
-tr.example-element-row:hover {
-  background: whitesmoke;
-
-}
-
-tr.example-element-row:active {
+tr:hover {
   background: #efefef;
 }
+
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 
 }
-.mat-row:hover .mat-cell {
-  border-color: currentColor;
-}
+
 
 .mat-table-sticky-border-elem-right {
   border-left: 1px solid #e0e0e0;
