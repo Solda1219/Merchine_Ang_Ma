@@ -34,7 +34,7 @@ export class WipCreateComponent implements OnInit {
       workShop: ['', Validators.required],
       technician: ['', Validators.required],
       customerId: ['', Validators.required],
-      contactId: ['', Validators.required],
+      contactId: [0],
       notes: [''],
       wipstatus: [false],
       visitRequired: [false],
