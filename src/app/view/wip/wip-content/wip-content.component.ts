@@ -50,38 +50,19 @@ export interface UserData {
 })
 export class WipContentComponent implements AfterViewInit, OnInit {
   loading = true;
-  displayedColumns: string[] = ["id",
-    "equipmentId",
-    "workShop",
-    "technician",
-    "customerId",
-    "contactId",
-    "notes",
-    "wipstatus",
-    "visitRequired",
-    "breakDown",
-    "engineHoursTillNow",
-    "dateCompleted",
-    "createdBy",
-    "isArchive",
-    "priority",
-    "warranty",
-    "location",
-    "serviceType",
-    "startDate",
-    "contractor",
-    "archiveDate",
-    "archiveBy",
+  displayedColumns: string[] = [
     "jobNo",
-    "ownerFolder",
-    "idplate",
-    "promisedDate",
-    "ssmaTimeStamp",
+    "serviceType",
+    "wipstatus",
     "model",
     "serialNumber",
     "make",
+    "technician",
+    "workShop",
     "customerName",
-    "contactName",
+
+    "visitRequired",
+    "breakDown",
     "action"];
   dataSource: MatTableDataSource<any>;
   wips = [];
@@ -97,7 +78,11 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
       res => {
         this.loading = false;
+        res['data'].sort((a, b) => {
+          return a.priority - b.priority;
+        });
         this.dataSource.data= res['data']
+        console.log("sorted wips", res['data']);
       },
       err => {
         console.log(err)
@@ -128,7 +113,142 @@ export class WipContentComponent implements AfterViewInit, OnInit {
     this.userService.gotoPage('/wip/update/'+ id);
   }
   deleteWip(id){
-    console.log("will be deleted ", id);
+    this.userService.deleteRequest('/api/Wip/ArchiveWip?wipId='+ id).subscribe(
+      res => {
+        this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
+          res => {
+            res['data'].sort((a, b) => {
+              return a.priority - b.priority;
+            });
+            this.dataSource.data = res['data']
+            this.userService.handleSuccess("WIP deleted successfully!");
+          },
+          err => {
+            console.log(err)
+            this.loading = false;
+            this.userService.handleError(err)
+          }
+        );
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+  }
+  upPriority(id){
+    let upId= id;
+    let downId= 0;
+    let upPriority= 0;
+    let downPriority= 0;
+    for(let i= 0; i<this.dataSource.data.length; i++){
+      if(this.dataSource.data[i]['id']== id){
+        if(i== 0){
+          return;
+        }
+        else{
+          upPriority= this.dataSource.data[i-1]['priority'];
+          downId= this.dataSource.data[i-1]['id'];
+          downPriority= this.dataSource.data[i]['priority'];
+          break;
+        }
+      }
+      
+
+    }
+    let upData= {'id':upId, 'priority': upPriority, 'isPrioritySwapped': true};
+    let downData = { 'id': downId, 'priority': downPriority, 'isPrioritySwapped': true };
+    console.log("updata", upData);
+    console.log("downData", downData);
+    this.userService.postRequest('/api/Wip/UpdateWip', upData, false).subscribe(
+      res => {
+        this.userService.postRequest('/api/Wip/UpdateWip', downData, false).subscribe(
+          res => {
+            this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
+              res => {
+                res['data'].sort((a, b) => {
+                  return a.priority - b.priority;
+                });
+                this.dataSource.data = res['data']
+                this.userService.handleSuccess("WIP priority updated successfully!");
+              },
+              err => {
+                console.log(err)
+                this.loading = false;
+                this.userService.handleError(err)
+              }
+            );
+          },
+          err => {
+            console.log(err)
+            this.loading = false;
+            this.userService.handleError(err)
+          }
+        )
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    )
+  }
+  downPriority(id) {
+    let downId= id;
+    let upId= 0;
+    let upPriority= 0;
+    let downPriority= 0;
+    for(let i= 0; i<this.dataSource.data.length; i++){
+      if(this.dataSource.data[i]['id']== id){
+        if(i== this.dataSource.data.length-1){
+          return;
+        }
+        else{
+          downPriority= this.dataSource.data[i+1]['priority'];
+          upId= this.dataSource.data[i+1]['id'];
+          upPriority= this.dataSource.data[i]['priority'];
+          break;
+        }
+      }
+      
+
+    }
+    let upData= {'id':upId, 'priority': upPriority, 'isPrioritySwapped': true};
+    let downData = { 'id': downId, 'priority': downPriority, 'isPrioritySwapped': true };
+    this.userService.postRequest('/api/Wip/UpdateWip', upData, false).subscribe(
+      res => {
+        this.userService.postRequest('/api/Wip/UpdateWip', downData, false).subscribe(
+          res => {
+            this.userService.getRequest('/api/Wip/GetAllWip').subscribe(
+              res => {
+                res['data'].sort((a, b) => {
+                  return a.priority - b.priority;
+                });
+                this.dataSource.data = res['data']
+                this.userService.handleSuccess("WIP priority updated successfully!");
+              },
+              err => {
+                console.log(err)
+                this.loading = false;
+                this.userService.handleError(err)
+              }
+            );
+          },
+          err => {
+            console.log(err)
+            this.loading = false;
+            this.userService.handleError(err)
+          }
+        )
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    )
+
   }
 }
 
