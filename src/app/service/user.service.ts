@@ -31,6 +31,10 @@ export class UserService {
     if (header) return this.http.get(URL,this.getHeader())
     else return this.http.get(URL,this.noAuthHeader)
   }
+  deleteRequest(URL, header = false) {
+    if(!this.isLoggedIn() && header == true) this.gotoLogin();
+    else return this.http.delete(URL,this.noAuthHeader)
+  }
   //message
   handleSuccess(message){
     this.toastr.success(message)

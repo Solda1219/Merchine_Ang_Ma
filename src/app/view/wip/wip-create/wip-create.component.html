@@ -35,11 +35,9 @@
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="customer">Customer</label>
             <div class="col-md-9">
-              <select id="customer" name="customer" class="form-control" formControlName= "customerId">
-                <option value="0">Please select</option>
-                <option value="1">Option #1</option>
-                <option value="2">Option #2</option>
-                <option value="3">Option #3</option>
+              <select id="customer" name="customer" (change)="onCustomerChange($event.target.value)" class="form-control" formControlName= "customerId">
+                <option [value]="customer.key" *ngFor="let customer of customers">{{customer.value}}
+                </option>
               </select>
             </div>
           </div>
@@ -47,7 +45,7 @@
             <label class="col-md-3 col-form-label" for="contact">Contact</label>
             <div class="col-md-9">
               <select id="contact" name="contact" class="form-control" formControlName= "contactId">
-                <option [value]="contact" *ngFor="let contact of contacts">{{contact}}
+                <option [value]="contact.key" *ngFor="let contact of contacts">{{contact.value}}
                 </option>
               </select>
             </div>
@@ -123,17 +121,31 @@
             </div>
           </div>
           <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="dateCompleted">Date Completed</label>
+            <div class="col-md-9">
+              <input class="form-control" id="dateCompleted" type="date" name="dateCompleted" placeholder="date" formControlName= "dateCompleted">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="archiveDate">Archive Date</label>
+            <div class="col-md-9">
+              <input class="form-control" id="archiveDate" type="date" name="archiveDate" placeholder="date" formControlName= "archiveDate">
+              <span class="help-block">Please enter a valid date</span>
+            </div>
+          </div>
+          <div class="form-group row">
             <label class="col-md-3 col-form-label" for="createdBy">Created By</label>
             <div class="col-md-9">
               <input type="text" id="createdBy" name="createdBy" class="form-control" placeholder="Text" formControlName= "createdBy">
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="col-md-3 col-form-label" for="priority">Priority</label>
             <div class="col-md-9">
-              <input type="number" id="priority" name="priority" class="form-control" placeholder="Nmber" formControlName= "priority">
+              <input type="number" id="priority" name="priority" class="form-control" placeholder="priority" formControlName= "priority">
             </div>
-          </div>
+          </div> -->
           <div class="form-group row">
             <label class="col-md-3 col-form-label" for="location">Location</label>
             <div class="col-md-9">

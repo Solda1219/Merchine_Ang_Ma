@@ -33,14 +33,14 @@ export class WipCreateComponent implements OnInit {
       equipmentId: ['', Validators.required],
       workShop: ['', Validators.required],
       technician: ['', Validators.required],
-      customerId: [0],
+      customerId: ['', Validators.required],
       contactId: [0],
       notes: [''],
       wipstatus: [false],
       visitRequired: [false],
       breakDown: [false],
       engineHoursTillNow: [0],
-      dateCompleted: ["2021-06-07T17:00:02.770Z"],
+      dateCompleted: ['', Validators.required],
       createdBy: ['', Validators.required],
       isArchive: [false],
       priority: [0],
@@ -49,7 +49,7 @@ export class WipCreateComponent implements OnInit {
       serviceType: ['', Validators.required],
       startDate: ['', Validators.required],
       contractor: ['', Validators.required],
-      archiveDate: ["2021-06-07T17:00:02.770Z"],
+      archiveDate: ['', Validators.required],
       archiveBy: ['', Validators.required],
       jobNo: [0],
       ownerFolder: [false],
@@ -94,12 +94,12 @@ export class WipCreateComponent implements OnInit {
       }
     );
     // customers
-
-    //contacts
-    
-    this.userService.getRequest('api/Customer/GetCustomerContacts').subscribe(
+    this.userService.getRequest('api/Customer/GetCustomerList').subscribe(
       res => {
-        this.contacts = res['data'];
+        this.customers = res['data'].slice(0, 5001);
+        this.loading= false;
+        console.log(this.customers);
+        console.log(this.customers[0]);
       },
       err => {
         console.log(err)
@@ -107,6 +107,8 @@ export class WipCreateComponent implements OnInit {
         this.userService.handleError(err)
       }
     );
+    //contacts
+
     this.userService.getRequest('api/Wip/GetWipStatuses').subscribe(
       res => {
         this.wipStatuses = res['data'];
@@ -130,7 +132,20 @@ export class WipCreateComponent implements OnInit {
     this.userService.getRequest('api/Wip/GetWipServiceTypes').subscribe(
       res => {
         this.serviceTypes = res['data'];
-        this.loading= false;
+        
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+  }
+  onCustomerChange(customerId) {
+    this.userService.getRequest('api/Customer/GetCustomerContacts?customerId='+customerId).subscribe(
+      res => {
+        this.contacts = res['data'];
+        
       },
       err => {
         console.log(err)
@@ -145,6 +160,7 @@ export class WipCreateComponent implements OnInit {
       return;
     }
     const wipData= this.formGroup.value;
+    console.log('wipdata in create', wipData);
     this.userService.postRequest('api/Wip/CreateWip', wipData, false).subscribe(
       res => {
         this.userService.handleSuccess("WIP created successfully!");

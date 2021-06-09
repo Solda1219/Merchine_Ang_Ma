@@ -34,34 +34,46 @@ export class WipUpdateComponent implements OnInit {
     this.userService.getRequest('api/Wip/GetWipDetailByID?wipId='+ wipId).subscribe(
       res => {
         this.detailedWip = res['data'];
+        let customerId= this.detailedWip['customerId'];
+        this.userService.getRequest('api/Customer/GetCustomerContacts?customerId='+customerId).subscribe(
+          res => {
+            this.contacts = res['data'];
+            
+          },
+          err => {
+            console.log(err)
+            this.loading = false;
+            this.userService.handleError(err)
+          }
+        );
         this.formGroup = this._formBuilder.group({
           id: [this.detailedWip['id'], Validators.required],
           equipmentId: [this.detailedWip['equipmentId'], Validators.required],
           workShop: [this.detailedWip['workShop'], Validators.required],
           technician: [this.detailedWip['technician'], Validators.required],
-          customerId: [this.detailedWip['customerId']],
+          customerId: [this.detailedWip['customerId'], Validators.required],
           contactId: [this.detailedWip['contactId']],
           notes: [this.detailedWip['notes']],
           wipstatus: [this.detailedWip['wipstatus']],
           visitRequired: [this.detailedWip['visitRequired']],
           breakDown: [this.detailedWip['breakDown']],
           engineHoursTillNow: [this.detailedWip['engineHoursTillNow']],
-          dateCompleted: ["2021-06-07T17:00:02.770Z"],
+          dateCompleted: [this.detailedWip['dateCompleted'], Validators.required],
           createdBy: [this.detailedWip['createdBy'], Validators.required],
           isArchive: [this.detailedWip['isArchive']],
-          priority: [this.detailedWip['priority']],
+          priority: [0],
           warranty: [this.detailedWip['warranty']],
           location: [this.detailedWip['location'], Validators.required],
           serviceType: [this.detailedWip['serviceType'], Validators.required],
           startDate: [this.detailedWip['startDate'], Validators.required],
           contractor: [this.detailedWip['contractor'], Validators.required],
-          archiveDate: ["2021-06-07T17:00:02.770Z"],
+          archiveDate: [this.detailedWip['archhiveDate'], Validators.required],
           archiveBy: [this.detailedWip['archiveBy'], Validators.required],
           jobNo: [this.detailedWip['jobNo']],
           ownerFolder: [this.detailedWip['ownerFolder']],
           idplate: [this.detailedWip['idplate']],
           promisedDate: [this.detailedWip['promisedDate'], Validators.required],
-          // ssmaTimeStamp: [this.detailedWip['contactId'], Validators.required],
+          // ssmaTimeStamp: [this.detailedWip['contactId']],
           model: [this.detailedWip['model'], Validators.required],
           serialNumber: [this.detailedWip['serialNumber'], Validators.required],
           make: [this.detailedWip['make'], Validators.required],
@@ -82,29 +94,29 @@ export class WipUpdateComponent implements OnInit {
       equipmentId: [this.detailedWip['equipmentId'], Validators.required],
       workShop: [this.detailedWip['workShop'], Validators.required],
       technician: [this.detailedWip['technician'], Validators.required],
-      customerId: [this.detailedWip['customerId']],
+      customerId: [this.detailedWip['customerId'], Validators.required],
       contactId: [this.detailedWip['contactId']],
       notes: [this.detailedWip['notes']],
       wipstatus: [this.detailedWip['wipstatus']],
       visitRequired: [this.detailedWip['visitRequired']],
       breakDown: [this.detailedWip['breakDown']],
       engineHoursTillNow: [this.detailedWip['engineHoursTillNow']],
-      dateCompleted: ["2021-06-07T17:00:02.770Z"],
+      dateCompleted: [this.detailedWip['dateCompleted'], Validators.required],
       createdBy: [this.detailedWip['createdBy'], Validators.required],
       isArchive: [this.detailedWip['isArchive']],
-      priority: [this.detailedWip['priority']],
+      priority: [0],
       warranty: [this.detailedWip['warranty']],
       location: [this.detailedWip['location'], Validators.required],
       serviceType: [this.detailedWip['serviceType'], Validators.required],
       startDate: [this.detailedWip['startDate'], Validators.required],
       contractor: [this.detailedWip['contractor'], Validators.required],
-      archiveDate: ["2021-06-07T17:00:02.770Z"],
+      archiveDate: [this.detailedWip['archiveDate'], Validators.required],
       archiveBy: [this.detailedWip['archiveBy'], Validators.required],
       jobNo: [this.detailedWip['jobNo']],
       ownerFolder: [this.detailedWip['ownerFolder']],
       idplate: [this.detailedWip['idplate']],
       promisedDate: [this.detailedWip['promisedDate'], Validators.required],
-      // ssmaTimeStamp: [this.detailedWip['contactId'], Validators.required],
+      // ssmaTimeStamp: [this.detailedWip['contactId']],
       model: [this.detailedWip['model'], Validators.required],
       serialNumber: [this.detailedWip['serialNumber'], Validators.required],
       make: [this.detailedWip['make'], Validators.required],
@@ -143,12 +155,12 @@ export class WipUpdateComponent implements OnInit {
       }
     );
     // customers
-
-    //contacts
-    
-    this.userService.getRequest('api/Customer/GetCustomerContacts').subscribe(
+    this.userService.getRequest('api/Customer/GetCustomerList').subscribe(
       res => {
-        this.contacts = res['data'];
+        this.customers = res['data'].slice(0, 5001);
+        this.loading= false;
+        console.log(this.customers);
+        console.log(this.customers[0]);
       },
       err => {
         console.log(err)
@@ -156,6 +168,8 @@ export class WipUpdateComponent implements OnInit {
         this.userService.handleError(err)
       }
     );
+    //contacts
+    
     this.userService.getRequest('api/Wip/GetWipStatuses').subscribe(
       res => {
         this.wipStatuses = res['data'];
@@ -180,6 +194,19 @@ export class WipUpdateComponent implements OnInit {
       res => {
         this.serviceTypes = res['data'];
         this.loading= false;
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
+        this.userService.handleError(err)
+      }
+    );
+  }
+  onCustomerChange(customerId) {
+    this.userService.getRequest('api/Customer/GetCustomerContacts?customerId='+customerId).subscribe(
+      res => {
+        this.contacts = res['data'];
+        
       },
       err => {
         console.log(err)

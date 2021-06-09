@@ -1,5 +1,5 @@
 .mat-elevation-z8 {
-  height: 75vh;
+  height: 70vh;
   max-width: 100%;
   overflow: auto;
 }
@@ -9,7 +9,8 @@ table {
 
 .mat-row .mat-cell {
   cursor: pointer;
-  padding-right: 15px;
+  padding-right: 10px;
+  margin-right:20px;
 }
 tr:hover {
   background: #efefef;
